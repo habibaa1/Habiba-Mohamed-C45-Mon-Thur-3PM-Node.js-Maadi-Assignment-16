@@ -1,12 +1,12 @@
 import { z} from "zod";
-import { generalValidationFielda } from "../../common/validation";
+import { generalValidationFields} from "../../common/validation";
 
 export const login ={
     body:z.strictObject({
         // email:z.email({error: "email is mandatory"}),
-        email: generalValidationFielda.email,
+        email: generalValidationFields.email,
         // password:z.string({error: "password is mandatory"}).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\w).{8,16}$/, {error:"weak password"}),
-        password: generalValidationFielda.password
+        password: generalValidationFields.password
     })
 }
 
@@ -15,8 +15,9 @@ export const signup ={
     //     userId:z.string()
     // }),
     body:login.body.safeExtend({
-        username: generalValidationFielda.username,
-        confirmPassword: generalValidationFielda.confirmPassword 
+        username: generalValidationFields.username,
+        phone: generalValidationFields.phone.optional(),
+        confirmPassword: generalValidationFields.confirmPassword 
         // username:z.string({error: "username is mandatory"}).min(2,{error:"min is 2 characters"}).max(25,{error:"max is 25 characters"}),
         // confirmPassword:z.string()
     }).refine((data) =>{

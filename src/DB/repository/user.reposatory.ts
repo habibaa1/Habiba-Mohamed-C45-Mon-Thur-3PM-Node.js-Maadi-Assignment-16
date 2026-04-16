@@ -6,4 +6,5 @@ export class UserRepository extends  BaseRepository<IUser> {
         constructor( model: Model<IUser>) {
             super(model)
         }
+        
 }

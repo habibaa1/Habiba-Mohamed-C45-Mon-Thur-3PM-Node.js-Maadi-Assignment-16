@@ -1,8 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB_URI = exports.PORT = void 0;
+exports.APPLICATION_NAME = exports.APP_EMAIL_PASSWORD = exports.APP_EMAIL = exports.TWITTER = exports.INSTAGRAM = exports.FACEBOOK = exports.ENC_IV_LENGTH = exports.ENC_KEY = exports.SALT_ROUND = exports.DB_URI = exports.PORT = void 0;
 const node_path_1 = require("node:path");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)({ path: (0, node_path_1.resolve)(`./.env.${process.env.NODE_ENV || "development"}`) });
 exports.PORT = process.env.PORT;
 exports.DB_URI = process.env.DB_URI;
+exports.SALT_ROUND = Number(process.env.SALT_ROUNDS) || 10;
+exports.ENC_KEY = process.env.ENC_KEY || "my_secret_key_12345678901234567";
+exports.ENC_IV_LENGTH = Number(process.env.ENC_IV_LENGTH) || 16;
+exports.FACEBOOK = process.env.FACEBOOK || "https://www.facebook.com";
+exports.INSTAGRAM = process.env.INSTAGRAM || "https://www.instagram.com";
+exports.TWITTER = process.env.TWITTER || "https://www.twitter.com";
+exports.APP_EMAIL = process.env.APP_EMAIL;
+exports.APP_EMAIL_PASSWORD = process.env.APP_EMAIL_PASSWORD;
+exports.APPLICATION_NAME = process.env.APPLICATION_NAME || "My Application";
