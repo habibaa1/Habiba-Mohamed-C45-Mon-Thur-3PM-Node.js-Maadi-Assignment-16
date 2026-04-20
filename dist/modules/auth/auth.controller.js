@@ -50,4 +50,12 @@ router.post("/login", (0, middleware_1.validation)(validators.login), async (req
     const result = auth_service_1.default.login(req.body);
     (0, response_1.successResponse)({ res, data: result });
 });
+router.patch("/confirm-email", (0, middleware_1.validation)(validators.ConfirmEmail), async (req, res, next) => {
+    await auth_service_1.default.confirmEmail(req.body);
+    return (0, response_1.successResponse)({ res });
+});
+router.patch("/resend-confirm-email", (0, middleware_1.validation)(validators.resendConfirmEmail), async (req, res, next) => {
+    await auth_service_1.default.resendConfirmEmail(req.body);
+    return (0, response_1.successResponse)({ res });
+});
 exports.default = router;

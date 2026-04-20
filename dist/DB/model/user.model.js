@@ -14,8 +14,10 @@ const userSchema = new mongoose_1.Schema({
     coverImages: { type: String, required: false },
     DOB: { type: Date, required: false },
     confirmedAt: { type: Date, required: false },
+    changeCredentialsTime: { type: Date },
     gender: { type: Number, enum: enums_1.GenderEnum, default: enums_1.GenderEnum.FEMALE },
-    role: { type: Number, enum: enums_1.RoleEnum, default: enums_1.RoleEnum.USER }
+    role: { type: Number, enum: enums_1.RoleEnum, default: enums_1.RoleEnum.USER },
+    provider: { type: Number, enum: enums_1.ProviderEnum, default: enums_1.ProviderEnum.SYSTEM }
 }, {
     timestamps: true,
     strict: true,

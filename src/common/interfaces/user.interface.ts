@@ -1,4 +1,4 @@
-import { GenderEnum, RoleEnum } from "../enums";
+import { GenderEnum, ProviderEnum, RoleEnum } from "../enums";
 
 export interface IUser{
     firstName:string;
@@ -12,8 +12,10 @@ export interface IUser{
     coverImages?:string[];
     DOB?:Date;
     confirmedAt?:Date;
+    changeCredentialsTime:Date;
     gender:GenderEnum;
     role:RoleEnum;
+    provider:ProviderEnum;
 
     createdAt:Date;
     updatedAt?:Date;

@@ -1,6 +1,8 @@
 import { model, models, Schema } from "mongoose";
+
+
 import { IUser } from "../../common/interfaces";
-import { GenderEnum, RoleEnum } from "../../common/enums";
+import { GenderEnum, ProviderEnum, RoleEnum } from "../../common/enums";
 
 
 const userSchema = new Schema<IUser>({
@@ -14,9 +16,11 @@ const userSchema = new Schema<IUser>({
     coverImages:{ type: String, required: false },
     DOB:{ type: Date, required: false },
     confirmedAt:{ type: Date, required: false },
+    changeCredentialsTime:{type:Date},
 
     gender:{ type: Number, enum:GenderEnum, default: GenderEnum.FEMALE},
-    role:{ type: Number, enum:RoleEnum, default: RoleEnum.USER}
+    role:{ type: Number, enum:RoleEnum, default: RoleEnum.USER},
+    provider:{type:Number,enum:ProviderEnum,default:ProviderEnum.SYSTEM}
     
 },{
     timestamps:true,

@@ -9,6 +9,7 @@ const modules_1 = require("./modules");
 const middleware_1 = require("./modules/middleware");
 const connections_db_1 = require("./DB/connections.db");
 const config_1 = require("./config/config");
+const services_1 = require("./common/services");
 const bootstrap = async () => {
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
@@ -24,5 +25,6 @@ const bootstrap = async () => {
         console.log(`Server is running on port ${config_1.PORT}👌`);
     });
     await (0, connections_db_1.connectDB)();
+    await services_1.redisService.connect();
 };
 exports.bootstrap = bootstrap;

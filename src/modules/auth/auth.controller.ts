@@ -40,4 +40,21 @@ router.post("/login",validation(validators.login),async (req: Request, res: Resp
 //     return successResponse<ISignupResspones>({res,status:201,data})
 //     // return successResponse<ILoginRessponse>({res,data })
 // })
+router.patch(
+    "/confirm-email",
+    validation(validators.ConfirmEmail),
+    async (req, res, next) => {
+        await authService.confirmEmail(req.body);
+        return successResponse({ res });
+    }
+);
+router.patch(
+    "/resend-confirm-email",
+    validation(validators.resendConfirmEmail),
+    async (req, res, next) => {
+        await authService.resendConfirmEmail(req.body);
+        return successResponse({ res });
+    }
+);
+
 export default router;

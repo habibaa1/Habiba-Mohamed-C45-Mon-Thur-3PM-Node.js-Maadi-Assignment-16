@@ -1,10 +1,22 @@
 import { z} from "zod";
 import { generalValidationFields} from "../../common/validation";
 
-export const login ={
+export const resendConfirmEmail ={
     body:z.strictObject({
-        // email:z.email({error: "email is mandatory"}),
         email: generalValidationFields.email,
+
+    })
+}
+export const ConfirmEmail ={
+    body:resendConfirmEmail.body.safeExtend({
+        otp: generalValidationFields.otp,
+
+    })
+}
+export const login ={
+    body:resendConfirmEmail.body.safeExtend({
+        // email:z.email({error: "email is mandatory"}),
+        // email: generalValidationFields.email,
         // password:z.string({error: "password is mandatory"}).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\w).{8,16}$/, {error:"weak password"}),
         password: generalValidationFields.password
     })
@@ -24,6 +36,8 @@ export const signup ={
         return data.password === data.confirmPassword},
         {message:"password and confirm password must be the same",})
 }
+
+
     // .superRefine((data,ctx)=>{
     //     if(data.password !== data.confirmPassword){
     //         ctx.addIssue({

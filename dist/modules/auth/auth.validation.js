@@ -1,11 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signup = exports.login = void 0;
+exports.signup = exports.login = exports.ConfirmEmail = exports.resendConfirmEmail = void 0;
 const zod_1 = require("zod");
 const validation_1 = require("../../common/validation");
-exports.login = {
+exports.resendConfirmEmail = {
     body: zod_1.z.strictObject({
         email: validation_1.generalValidationFields.email,
+    })
+};
+exports.ConfirmEmail = {
+    body: exports.resendConfirmEmail.body.safeExtend({
+        otp: validation_1.generalValidationFields.otp,
+    })
+};
+exports.login = {
+    body: exports.resendConfirmEmail.body.safeExtend({
         password: validation_1.generalValidationFields.password
     })
 };

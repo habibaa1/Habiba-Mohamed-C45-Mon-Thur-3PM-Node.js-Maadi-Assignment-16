@@ -1,8 +1,11 @@
 import {z} from "zod";
 
-import { login , signup } from "./auth.validation";
+import { ConfirmEmail, login , resendConfirmEmail, signup } from "./auth.validation";
 
 export type LoginDto = z.infer<typeof login.body>
+export type ConfirmEmailDto = z.infer<typeof ConfirmEmail.body>
+export type ResendConfirmEmailDto = z.infer<typeof resendConfirmEmail.body>
+
 export type SignupDto = z.infer<typeof signup.body>
 
 // export interface LoginDto{

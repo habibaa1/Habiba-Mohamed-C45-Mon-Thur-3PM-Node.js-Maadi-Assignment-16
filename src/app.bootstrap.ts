@@ -4,11 +4,12 @@ import { authRouter } from "./modules";
 import { globalErroHandler } from "./modules/middleware";
 import { connectDB } from "./DB/connections.db";
 import { PORT } from "./config/config";
+import { redisService } from "./common/services";
 export const bootstrap = async () => {
     const app:Express = express();
     app.use(express.json());
 
-    //     app.get("/" , (req:express.Request,res:express.Response,next:express.NextFunction)=>{
+    //     app.get("/" , (req:express.Request,res:express.Response,next:express.NextFunction"=>
     //     res.status(200).json({message:"landing page"});
     // })  mmkn ashel al type mn hna al hea kalmt express 3shan hdkhlha fo2
     app.get("/" , (req:Request,res:Response,next:NextFunction)=>{
@@ -26,5 +27,6 @@ export const bootstrap = async () => {
         console.log(`Server is running on port ${PORT}👌`);
     });
     await connectDB();
+    await redisService.connect();
     // console.log("application is bootstrapped");
 }

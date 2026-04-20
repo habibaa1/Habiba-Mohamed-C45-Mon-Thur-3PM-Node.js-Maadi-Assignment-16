@@ -2,9 +2,7 @@ import crypto from 'node:crypto';
 import { ENC_IV_LENGTH, ENC_KEY } from '../../../config/config';
 import { BadRequestExaption } from '../../exception';
 
-/**
- * دالة لتشفير النصوص باستخدام خوارزمية aes-256-cbc
- */
+
 export const generateEncryption = async (plaintext: string) : Promise<string> => {
     const iv = crypto.randomBytes(Number(ENC_IV_LENGTH));
 
