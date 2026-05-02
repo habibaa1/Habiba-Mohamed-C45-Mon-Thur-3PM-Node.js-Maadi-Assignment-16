@@ -29,3 +29,4 @@ export const APP_EMAIL_PASSWORD = process.env.APP_EMAIL_PASSWORD;
 export const APPLICATION_NAME = process.env.APPLICATION_NAME || "My Application";
 export const REDIS_URI = process.env.REDIS_URI as string;
 export const ORIGINS = (process.env.ORIGINS?.split(",") || []) as string[];
+export const CLIENT_IDS = (process.env.CLIENT_IDS?.split(",") || []) as string[];

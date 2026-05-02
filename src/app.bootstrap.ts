@@ -1,13 +1,14 @@
 import type { Express,Request,Response,NextFunction} from "express";
 import express from "express";
-import { authRouter } from "./modules";
+import { authRouter, userRouter } from "./modules";
 import { globalErroHandler } from "./modules/middleware";
 import { connectDB } from "./DB/connections.db";
 import { PORT } from "./config/config";
 import { redisService } from "./common/services";
+import cors from "cors"
 export const bootstrap = async () => {
     const app:Express = express();
-    app.use(express.json());
+    app.use(express.json(), cors);
 
     //     app.get("/" , (req:express.Request,res:express.Response,next:express.NextFunction"=>
     //     res.status(200).json({message:"landing page"});
@@ -17,6 +18,7 @@ export const bootstrap = async () => {
     })
     //application routes
     app.use("/auth", authRouter);
+    app.use("/user",userRouter);
 
     //application error
     app.use(globalErroHandler)

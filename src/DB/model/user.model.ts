@@ -1,6 +1,4 @@
 import { model, models, Schema } from "mongoose";
-
-
 import { IUser } from "../../common/interfaces";
 import { GenderEnum, ProviderEnum, RoleEnum } from "../../common/enums";
 

@@ -44,12 +44,6 @@ const emailTemplate = ({ title, code }) => {
                         </tr>
                         <tr>
                             <td>
-                                <p style="padding:0px 100px;">
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
                                 <p style="margin:10px 0px 30px 0px; border-radius:4px; padding:10px 20px; border: 0; color:#fff; background-color:#630E2B;">${code}</p>
                             </td>
                         </tr>
@@ -67,14 +61,20 @@ const emailTemplate = ({ title, code }) => {
                         <tr>
                             <td>
                                 <div style="margin-top:20px;">
-                                    <a href="${config_js_1.FACEBOOK}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px; color:#fff; border-radius:50%;">
-                                        <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" height="50px"></span>
+                                    <a href="${config_js_1.FACEBOOK}" style="text-decoration: none;">
+                                        <span style="padding:10px 9px; border-radius:50%;">
+                                            <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35062_erj5dx.png" width="50px" height="50px" style="display: inline-block;">
+                                        </span>
                                     </a>
-                                    <a href="${config_js_1.INSTAGRAM}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px; color:#fff; border-radius:50%;">
-                                        <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" height="50px"></span>
+                                    <a href="${config_js_1.INSTAGRAM}" style="text-decoration: none;">
+                                        <span style="padding:10px 9px; border-radius:50%;">
+                                            <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35063_zottpo.png" width="50px" height="50px" style="display: inline-block;">
+                                        </span>
                                     </a>
-                                    <a href="${config_js_1.TWITTER}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px; color:#fff; border-radius:50%;">
-                                        <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" height="50px"></span>
+                                    <a href="${config_js_1.TWITTER}" style="text-decoration: none;">
+                                        <span style="padding:10px 9px; border-radius:50%;">
+                                            <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" height="50px" style="display: inline-block;">
+                                        </span>
                                     </a>
                                 </div>
                             </td>

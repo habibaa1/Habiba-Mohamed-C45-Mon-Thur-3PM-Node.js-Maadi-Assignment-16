@@ -46,9 +46,9 @@ router.post("/signup", (0, middleware_1.validation)(validators.signup), async (r
     let data = await auth_service_1.default.signup(req.body);
     (0, response_1.successResponse)({ res, status: 201, data });
 });
-router.post("/login", (0, middleware_1.validation)(validators.login), async (req, res) => {
-    const result = auth_service_1.default.login(req.body);
-    (0, response_1.successResponse)({ res, data: result });
+router.post("/login", (0, middleware_1.validation)(validators.login), async (req, res, next) => {
+    const data = await auth_service_1.default.login(req.body, `${req.protocol}://${req.host}`);
+    return (0, response_1.successResponse)({ res, data });
 });
 router.patch("/confirm-email", (0, middleware_1.validation)(validators.ConfirmEmail), async (req, res, next) => {
     await auth_service_1.default.confirmEmail(req.body);
@@ -57,5 +57,37 @@ router.patch("/confirm-email", (0, middleware_1.validation)(validators.ConfirmEm
 router.patch("/resend-confirm-email", (0, middleware_1.validation)(validators.resendConfirmEmail), async (req, res, next) => {
     await auth_service_1.default.resendConfirmEmail(req.body);
     return (0, response_1.successResponse)({ res });
+});
+router.post("/signup/gmail", async (req, res, next) => {
+    console.log(req.body);
+    const { status, credentials } = await auth_service_1.default.signupWithGmail(req.body.idToken, `${req.protocol}://${req.host}`);
+    return (0, response_1.successResponse)({ res, status, data: { credentials } });
+});
+router.post("/forgot-password", (0, middleware_1.validation)(validators.resendConfirmEmail), async (req, res, next) => {
+    try {
+        await auth_service_1.default.requestForgotPasswordOtp(req.body);
+        res.status(200).json({ message: "Reset code sent to your email" });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+router.post("/verify-forgot-password", (0, middleware_1.validation)(validators.ConfirmEmail), async (req, res, next) => {
+    try {
+        await auth_service_1.default.verifyForgotPasswordOtp(req.body);
+        res.status(200).json({ message: "OTP verified successfully" });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+router.patch("/reset-password", (0, middleware_1.validation)(validators.resetForgotPassword), async (req, res, next) => {
+    try {
+        await auth_service_1.default.resetForgotPasswordOtp(req.body);
+        res.status(200).json({ message: "Password updated successfully" });
+    }
+    catch (error) {
+        next(error);
+    }
 });
 exports.default = router;

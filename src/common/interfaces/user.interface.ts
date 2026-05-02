@@ -8,9 +8,10 @@ export interface IUser{
     password:string;
     bio?:string;
     phone?:string;
-    profileImage?:string;
+    profilePicture?:string;
     coverImages?:string[];
     DOB?:Date;
+    confirmEmail?:Date;
     confirmedAt?:Date;
     changeCredentialsTime:Date;
     gender:GenderEnum;

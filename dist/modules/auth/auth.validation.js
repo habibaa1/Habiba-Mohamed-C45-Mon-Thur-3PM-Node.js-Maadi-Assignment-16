@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signup = exports.login = exports.ConfirmEmail = exports.resendConfirmEmail = void 0;
+exports.resetForgotPassword = exports.signup = exports.login = exports.ConfirmEmail = exports.resendConfirmEmail = void 0;
 const zod_1 = require("zod");
 const validation_1 = require("../../common/validation");
 exports.resendConfirmEmail = {
@@ -26,4 +26,17 @@ exports.signup = {
     }).refine((data) => {
         return data.password === data.confirmPassword;
     }, { message: "password and confirm password must be the same", })
+};
+exports.resetForgotPassword = {
+    body: zod_1.z.strictObject({
+        email: validation_1.generalValidationFields.email,
+        otp: validation_1.generalValidationFields.otp,
+        password: validation_1.generalValidationFields.password,
+        confirmPassword: validation_1.generalValidationFields.confirmPassword
+    }).refine((data) => {
+        return data.password === data.confirmPassword;
+    }, {
+        message: "password and confirm password must be the same",
+        path: ["confirmPassword"]
+    })
 };

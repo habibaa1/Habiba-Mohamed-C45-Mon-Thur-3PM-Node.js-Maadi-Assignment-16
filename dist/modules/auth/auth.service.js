@@ -9,17 +9,34 @@ const email_1 = require("../../common/utils/email");
 const services_1 = require("../../common/services");
 const enums_1 = require("../../common/enums");
 const otp_1 = require("../../common/utils/otp");
+const google_auth_library_1 = require("google-auth-library");
+const config_1 = require("../../config/config");
 class AuthnticationService {
     userRepository;
     redis;
+    tokenService;
     constructor() {
         this.userRepository = new user_reposatory_1.UserRepository(model_1.UserModel);
+        this.tokenService = new services_1.TokenService();
         this.redis = services_1.redisService;
     }
-    login = (data) => {
-        console.log({ this: this });
-        return "Done login";
-    };
+    async login(inputs, issuer) {
+        const { email, password } = inputs;
+        const user = await this.userRepository.findOne({
+            filter: {
+                email,
+                provider: enums_1.ProviderEnum.SYSTEM,
+                confirmEmail: { $exists: true }
+            },
+        });
+        if (!user) {
+            throw new exception_1.NotFoundExeption("invalid login credentials");
+        }
+        if (!await (0, security_1.compareHash)({ plaintext: password, ciphertext: user.password })) {
+            throw new exception_1.NotFoundExeption("invaled login credentials");
+        }
+        return await this.tokenService.createLoginCredentials(user, issuer);
+    }
     async sendEmailOtp({ email, subject, title }) {
         const isBlockedTTL = await this.redis.ttl(this.redis.blockOtpKey({ email, subject }));
         if (isBlockedTTL > 0) {
@@ -108,6 +125,104 @@ class AuthnticationService {
         return;
     }
     ;
+    async verifyGoogleAccount(idToken) {
+        const client = new google_auth_library_1.OAuth2Client();
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: config_1.CLIENT_IDS,
+        });
+        const payload = ticket.getPayload();
+        if (!payload?.email_verified) {
+            throw new exception_1.BadRequestExaption("Invalid token payload");
+        }
+        return payload;
+    }
+    ;
+    async loginWithGmail(idToken, issuer) {
+        const payload = await this.verifyGoogleAccount(idToken);
+        const user = await this.userRepository.findOne({
+            filter: {
+                email: payload.email,
+                provider: enums_1.ProviderEnum.GOOGLE
+            }
+        });
+        if (!user) {
+            throw new exception_1.NotFoundExeption("Invalid account provider or not register account");
+        }
+        return await this.tokenService.createLoginCredentials(user, issuer);
+    }
+    ;
+    async signupWithGmail(idToken, issuer) {
+        const payload = await this.verifyGoogleAccount(idToken);
+        const checkExist = await this.userRepository.findOne({
+            filter: {
+                email: payload.email
+            }
+        });
+        console.log({ checkExist });
+        if (checkExist) {
+            if (checkExist.provider !== enums_1.ProviderEnum.GOOGLE) {
+                throw new exception_1.ConflictExeption("Invalid account provider");
+            }
+            return { status: 200, credentials: await this.loginWithGmail(idToken, issuer) };
+        }
+        const account = await this.userRepository.createOne({
+            data: {
+                firstName: payload.given_name,
+                lastName: payload.family_name,
+                email: payload.email,
+                profilePicture: payload.picture,
+                confirmEmail: new Date(),
+                provider: enums_1.ProviderEnum.GOOGLE
+            }
+        });
+        return { status: 201, credentials: await this.tokenService.createLoginCredentials(account, issuer) };
+    }
+    ;
+    async requestForgotPasswordOtp(inputs) {
+        const { email } = inputs;
+        const account = await this.userRepository.findOne({
+            filter: {
+                email,
+                confirmEmail: { $exists: true },
+                provider: enums_1.ProviderEnum.SYSTEM
+            }
+        });
+        if (!account) {
+            throw new exception_1.NotFoundExeption("Fail to find matching account");
+        }
+        await this.sendEmailOtp({
+            email,
+            subject: enums_1.EmailEnum.Forgot_Password,
+            title: "Reset Code"
+        });
+    }
+    async verifyForgotPasswordOtp({ email, otp }) {
+        const hashOtp = await this.redis.get(this.redis.otpKey({ email, subject: enums_1.EmailEnum.Forgot_Password }));
+        if (!hashOtp) {
+            throw new exception_1.NotFoundExeption("Expired or invalid otp");
+        }
+        if (!await (0, security_1.compareHash)({ plaintext: otp, ciphertext: hashOtp })) {
+            throw new exception_1.ConflictExeption("Invalid otp");
+        }
+    }
+    async resetForgotPasswordOtp(inputs) {
+        const { email, otp, password } = inputs;
+        const hashOtp = await this.redis.get(this.redis.otpKey({ email, subject: enums_1.EmailEnum.Forgot_Password }));
+        if (!hashOtp || !await (0, security_1.compareHash)({ plaintext: otp, ciphertext: hashOtp })) {
+            throw new exception_1.ConflictExeption("Invalid or expired otp process");
+        }
+        const hashedPassword = await (0, security_1.generateHash)({ plaintext: password });
+        const account = await this.userRepository.findOneAndUpdate({
+            filter: { email, provider: enums_1.ProviderEnum.SYSTEM },
+            update: { password: hashedPassword },
+            options: {}
+        });
+        if (!account) {
+            throw new exception_1.NotFoundExeption("Fail to update password");
+        }
+        await this.redis.deleteKey(this.redis.otpKey({ email, subject: enums_1.EmailEnum.Forgot_Password }));
+    }
 }
 exports.AuthnticationService = AuthnticationService;
 exports.default = new AuthnticationService();

@@ -10,13 +10,15 @@ const middleware_1 = require("./modules/middleware");
 const connections_db_1 = require("./DB/connections.db");
 const config_1 = require("./config/config");
 const services_1 = require("./common/services");
+const cors_1 = __importDefault(require("cors"));
 const bootstrap = async () => {
     const app = (0, express_1.default)();
-    app.use(express_1.default.json());
+    app.use(express_1.default.json(), cors_1.default);
     app.get("/", (req, res, next) => {
         res.status(200).json({ message: "landing page" });
     });
     app.use("/auth", modules_1.authRouter);
+    app.use("/user", modules_1.userRouter);
     app.use(middleware_1.globalErroHandler);
     app.get("/*dummy", (req, res, next) => {
         res.status(404).json({ message: "invalid route" });

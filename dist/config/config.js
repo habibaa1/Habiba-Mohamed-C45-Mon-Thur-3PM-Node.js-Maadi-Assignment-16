@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ORIGINS = exports.REDIS_URI = exports.APPLICATION_NAME = exports.APP_EMAIL_PASSWORD = exports.APP_EMAIL = exports.TWITTER = exports.INSTAGRAM = exports.FACEBOOK = exports.REFRESH_TOKEN_EXPIRES_IN = exports.ACCESS_TOKEN_EXPIRES_IN = exports.SYSTEM_REFRESH_TOKEN_SIGNATURE = exports.SYSTEM_ACCESS_TOKEN_SIGNATURE = exports.USER_REFRESH_TOKEN_SIGNATURE = exports.USER_ACCESS_TOKEN_SIGNATURE = exports.ENC_IV_LENGTH = exports.ENC_KEY = exports.SALT_ROUND = exports.DB_URI = exports.PORT = void 0;
+exports.CLIENT_IDS = exports.ORIGINS = exports.REDIS_URI = exports.APPLICATION_NAME = exports.APP_EMAIL_PASSWORD = exports.APP_EMAIL = exports.TWITTER = exports.INSTAGRAM = exports.FACEBOOK = exports.REFRESH_TOKEN_EXPIRES_IN = exports.ACCESS_TOKEN_EXPIRES_IN = exports.SYSTEM_REFRESH_TOKEN_SIGNATURE = exports.SYSTEM_ACCESS_TOKEN_SIGNATURE = exports.USER_REFRESH_TOKEN_SIGNATURE = exports.USER_ACCESS_TOKEN_SIGNATURE = exports.ENC_IV_LENGTH = exports.ENC_KEY = exports.SALT_ROUND = exports.DB_URI = exports.PORT = void 0;
 const node_path_1 = require("node:path");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)({ path: (0, node_path_1.resolve)(`./.env.${process.env.NODE_ENV || "development"}`) });
@@ -23,3 +23,4 @@ exports.APP_EMAIL_PASSWORD = process.env.APP_EMAIL_PASSWORD;
 exports.APPLICATION_NAME = process.env.APPLICATION_NAME || "My Application";
 exports.REDIS_URI = process.env.REDIS_URI;
 exports.ORIGINS = (process.env.ORIGINS?.split(",") || []);
+exports.CLIENT_IDS = (process.env.CLIENT_IDS?.split(",") || []);

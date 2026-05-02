@@ -36,7 +36,19 @@ export const signup ={
         return data.password === data.confirmPassword},
         {message:"password and confirm password must be the same",})
 }
-
+export const resetForgotPassword = {
+    body: z.strictObject({
+        email: generalValidationFields.email,
+        otp: generalValidationFields.otp,
+        password: generalValidationFields.password,
+        confirmPassword: generalValidationFields.confirmPassword
+    }).refine((data) => {
+        return data.password === data.confirmPassword;
+    }, {
+        message: "password and confirm password must be the same",
+        path: ["confirmPassword"] // عشان الخطأ يظهر عند حقل التأكيد
+    })
+};
 
     // .superRefine((data,ctx)=>{
     //     if(data.password !== data.confirmPassword){
